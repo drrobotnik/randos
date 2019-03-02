@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  margin: 0;
+  padding: 0;
+  background-color: #e6ecf0;
+}
+
+.App {
+  text-align: center;
+  background-color: #e6ecf0;
+}
+
+.container {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #fff;
+  min-height: 450px; /* app-header height is 40px */
+}
+
+.App-header {
+  background-color: #e8f5fd;
+  height: 40px;
+  padding: 20px;
+  color: black;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.nav {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+  background-color: #fff;
+}
+
+.nav__link {
+  display: inline-block;
+  width: 50%;
+  line-height: 30px;
+  padding: 16px;
+  font-size: 30px;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  background-color: #e8f5fd;
+  color: #1da1f2;
+  border: none;
+}
+.nav__link:hover {
+  background-color: #4ab3f4;
+  color: #fff;
+}
+
+.nav__link.active,
+.nav__link:active,
+.nav__link:focus {
+  background-color: #1da1f2;
+  color: #fff;
+  outline: none;
+}
+
+.avatar {
+  display: block;
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.avatar__img {
+  height: auto;
+  display: block;
+}
+
+/* CARD */
+.card {
+  display: block;
+  border: 2px solid #ccc;
+  padding: 12px;
+  margin: 4px;
+}
+
+/* FLAG */
+
+.flag {
+  display: table;
+  width: 100%;
+}
+
+.flag__image,
+.flag__body {
+  display: table-cell;
+  vertical-align: middle;
+}
+.flag--top .flag__image,
+.flag--top .flag__body {
+  vertical-align: top;
+}
+.flag--bottom .flag__image,
+.flag--bottom .flag__body {
+  vertical-align: bottom;
+}
+
+.flag__image {
+  padding-right: 10px;
+}
+.flag__image > img {
+  display: block;
+  max-width: none;
+}
+.flag--rev .flag__image {
+  padding-right: 0;
+  padding-left: 10px;
+}
+
+.flag__body {
+  width: 100%;
+}
+
+/* GRID */
+
+.grid {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.grid > * {
+  flex: 1 100%;
+}
