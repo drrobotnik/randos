@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+import { nav, cards } from './app';
+import serialize from 'serialize-javascript'; // fancy form of JSON.stringify();
+
+const render = (data, preloadedState, metas) => {
+
+  return `<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -23,8 +28,16 @@
   </head>
   <body>
     <div id="app">
-      <nav class="nav"></nav>
-      <div class="container"></div>
+      <nav class="nav">${nav()}</nav>
+      <div class="container">${cards(data, 1)}</div>
+      <script>
+          window.__PRELOADED_STATE__ = ${serialize(preloadedState)}
+        </script>
     </div>
+    <script src="./bundle.js"></script>
   </body>
 </html>
+`;
+};
+
+export default render;

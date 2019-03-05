@@ -1,79 +1,51 @@
-import { RemoteGet } from './js/utilities';
-import genderButton from './components/Button/genderButton';
-import userCard from './components/Cards/userCard';
-import grid from './components/Grid/grid';
-
 import constants from './js/constants';
+import { RemoteGet } from './js/utilities';
+import { cards } from './app';
 
-const app = () => {
-  let users;
-  const mobileSize = constants.mobile;
-  const windowSize = window.outerWidth;
-  
-  const nav = document.querySelector('.nav');
-  const container = document.querySelector('.container');
+const container = document.querySelector('.container');
 
-  let state = {
-    windowWidth: windowSize,
-    mobileOrDesktop: windowSize > mobileSize ? 'desktop' : 'mobile'
-  };
+const mobileSize = constants.mobile;
+const windowSize = window.outerWidth;
 
-  const renderGenderButtons = genders => genders.map((gender) => genderButton(gender)).join('');
+let state;
 
-  const userCards = users => users.map((user) => userCard(user));
+const preloadState = window.__PRELOADED_STATE__;
 
-  const renderNav = () => {
-    /* Complete gender set from data:
-     * const genderSet = [...new Set(users.map( user => user.gender))];  
-    */
-    const genderSet = ['male', 'female'];
-    nav.innerHTML = renderGenderButtons(genderSet);
-  }
-
-  const init = (data) => {
-    users = data;
-
-    const columns = 'desktop' === state.mobileOrDesktop ? 3:1;
-    
-
-    container.innerHTML = grid(userCards(users), columns);
-  }
-
-  const render = () => {
-
-    const mobileOrDesktop = window.outerWidth > mobileSize ? 'desktop' : 'mobile';
-
-    // mutating state.
-    if(state.mobileOrDesktop !== mobileOrDesktop ) {
-
-      console.log('stateChanged', state.mobileOrDesktop, mobileOrDesktop);
-      state.windowWidth = window.outerWidth;
-      state.mobileOrDesktop = mobileOrDesktop;
-
-      const columns = 'desktop' === state.mobileOrDesktop ? 3:1;
-
-      container.innerHTML = grid(userCards(users), columns);
-    }
-  }
-
-  return {
-    init,
-    render,
-    renderNav,
-  }
+const loadState = {
+  windowWidth: windowSize,
+  mobileOrDesktop: windowSize > mobileSize ? 'desktop' : 'mobile',
+  columns: windowSize > mobileSize ? 3 : 1,
 }
 
-const App = app();
+document.addEventListener("DOMContentLoaded", () => {
+  // preload assumes mobile first, re-render if desktop
+  if(loadState.mobileOrDesktop !== preloadState.mobileOrDesktop) {
+    container.innerHTML = cards(preloadState.users, loadState.columns);
+  }
+  // combine states
+  state = Object.assign(preloadState, loadState);
+});
 
-App.renderNav();
+window.addEventListener('resize', () => {
+  const mobileOrDesktop = window.outerWidth > mobileSize ? 'desktop' : 'mobile';
 
-RemoteGet('?results=9', (data) => App.init(data.results));
+  // mutating state.
+  if(state.mobileOrDesktop !== mobileOrDesktop) {
+    console.log('stateChanged', state.mobileOrDesktop, mobileOrDesktop);
+    state.windowWidth = outerWidth;
+    state.mobileOrDesktop = mobileOrDesktop;
+    state.columns = 'desktop' === state.mobileOrDesktop ? 3 : 1;
 
-window.addEventListener('resize', App.render);
+    container.innerHTML = cards(state.users, state.columns);
+  }
+});
 
 document.addEventListener('click', (event) => {
   const gender = event.target.getAttribute('data-gender');
   if(gender) {
-    RemoteGet(`?results=9&gender=${gender}`, (data) => App.init(data.results));
+    RemoteGet(`?results=9&gender=${gender}`, (data) => {
+      state.users = data.results;
+      container.innerHTML = cards(state.users, state.columns);
+    });
   }
 });
