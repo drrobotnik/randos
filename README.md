@@ -10,8 +10,8 @@ In order to run this app locally clone the repo, then from within the project fo
 
 ### Start the dev server
 
-`npm start`
+`npm run build:server`
 
 ### Open the app in your browser
 
-http://localhost:8080/
+http://localhost:3000/
